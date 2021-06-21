@@ -216,4 +216,13 @@ class BlanksToDotsView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : BlanksToDotsView {
+            val view : BlanksToDotsView = BlanksToDotsView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
