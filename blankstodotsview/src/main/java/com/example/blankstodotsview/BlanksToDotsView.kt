@@ -191,4 +191,27 @@ class BlanksToDotsView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : BlanksToDotsView) {
+
+        private val animator : Animator = Animator(view)
+        private val btd : BlanksToDots = BlanksToDots(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            btd.draw(canvas, paint)
+            animator.animate {
+                btd.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            btd.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
