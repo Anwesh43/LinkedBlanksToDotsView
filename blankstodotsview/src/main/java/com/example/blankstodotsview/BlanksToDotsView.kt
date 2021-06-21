@@ -21,7 +21,7 @@ val lines : Int = 4
 val parts : Int = 3
 val scGap : Float = 0.13f / (parts * lines)
 val strokeFactor : Float = 90f
-val rFactor : Float = 29.3f
+val rFactor : Float = 61.3f
 val delay : Long = 20
 val backColor : Int = Color.parseColor("#BDBDBD")
 val sizeFactor : Float = 3f
@@ -47,13 +47,15 @@ fun Canvas.drawBlanksToDots(scale : Float, w : Float, h : Float, paint : Paint) 
         val sc3j : Float = sc3.divideScale(j, lines)
         save()
         translate(-gap / 2 + lGap * (2 * j), 0f)
-        drawLine(
-            lGap * sc2j,
-            0f,
-            lGap * sc1j - lGap * 0.5f * sc2j,
-            0f,
-            paint
-        )
+        if (sc1j > 0 &&  !(sc2j >= 1)) {
+            drawLine(
+                lGap * sc2j * 0.5f,
+                0f,
+                lGap * sc1j - lGap * 0.5f * sc2j,
+                0f,
+                paint
+            )
+        }
         drawCircle(lGap / 2, (h / 2 + r) * sc3j, r * sc2j, paint)
         restore()
     }
@@ -138,6 +140,10 @@ class BlanksToDotsView(ctx : Context) : View(ctx) {
 
         private var next : BTDNode? = null
         private var prev : BTDNode? = null
+
+        init {
+            addNeighbor()
+        }
 
         fun addNeighbor() {
             if (i < colors.size - 1) {
