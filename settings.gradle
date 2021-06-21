@@ -1,0 +1,3 @@
+include ':blankstodotsview'
+include ':app'
+rootProject.name = "LinkedBlanksToDotsView"
