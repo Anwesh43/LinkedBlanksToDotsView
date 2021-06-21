@@ -131,4 +131,41 @@ class BlanksToDotsView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    data class BTDNode(var i : Int, val state : State = State()) {
+
+        private var next : BTDNode? = null
+        private var prev : BTDNode? = null
+
+        fun addNeighbor() {
+            if (i < colors.size - 1) {
+                next = BTDNode(i + 1)
+                next?.prev = this
+            }
+        }
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            canvas.drawBTDNode(i, state.scale, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            state.update(cb)
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            state.startUpdating(cb)
+        }
+
+        fun getNext(dir : Int, cb : () -> Unit) : BTDNode {
+            var curr : BTDNode? = prev
+            if (dir == 1) {
+                curr = next
+            }
+            if (curr != null) {
+                return curr
+            }
+            cb()
+            return this
+        }
+    }
 }
